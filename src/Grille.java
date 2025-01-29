@@ -57,7 +57,7 @@ public class Grille {
         }
 
         // Créer les graphes des nœuds (ajouter les voisins)
-        //creerGraphGrille();
+        creerGraphGrille();
     }
 
     // Essayer de placer un mot à la position (x, y) dans la direction spécifiée
@@ -101,7 +101,41 @@ public class Grille {
         return true;
     }
 
+    // Créer le graphe de la grille en ajoutant les voisins
+    private void creerGraphGrille() {
+        for (int i = 0; i < ligne; i++) {
+            for (int j = 0; j < colonne; j++) {
+                Noeud current = grille[i][j];
+                if (current.getTypeNoeud() == Noeud.TypeNoeud.bloquante) continue;
 
+                // Ajouter des voisins (horizontaux, verticaux et diagonaux)
+                if (i > 0 && grille[i - 1][j].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i - 1][j]);
+                if (i < ligne - 1 && grille[i + 1][j].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i + 1][j]);
+                if (j > 0 && grille[i][j - 1].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i][j - 1]);
+                if (j < colonne - 1 && grille[i][j + 1].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i][j + 1]);
+                if (i > 0 && j > 0 && grille[i - 1][j - 1].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i - 1][j - 1]);
+                if (i > 0 && j < colonne - 1 && grille[i - 1][j + 1].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i - 1][j + 1]);
+                if (i < ligne - 1 && j > 0 && grille[i + 1][j - 1].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i + 1][j - 1]);
+                if (i < ligne - 1 && j < colonne - 1 && grille[i + 1][j + 1].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i + 1][j + 1]);
+            }
+        }
+    }
+
+
+    public void afficherGraphe() {
+        for (int i = 0; i < ligne; i++) {
+            for (int j = 0; j < colonne; j++) {
+                Noeud currentNode = grille[i][j];
+                if (currentNode != null && currentNode.getTypeNoeud() != Noeud.TypeNoeud.bloquante) {
+                    System.out.print("Noeud (" + currentNode.getX() + "," + currentNode.getY() + ") -> ");
+                    List<Noeud> voisins = currentNode.getVoisins();
+                    for (Noeud voisin : voisins) {
+                        System.out.print(" (" + voisin.getX() + "," + voisin.getY() + ")");
+                    }
+                    System.out.println();
+                }
+            }
+        }}
 
     // Afficher la grille en termes de lettres
     public void afficherGrille() {

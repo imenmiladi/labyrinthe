@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Noeud {
@@ -17,6 +18,7 @@ public class Noeud {
        this.y = y;
        this.lettre = lettre;
        this.typeNoeud = typeNoeud;
+       this.voisins = new ArrayList<>();
    }
 
     public int getX() {

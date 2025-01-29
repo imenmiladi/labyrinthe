@@ -17,6 +17,7 @@ public class Main {
 
         g.creerGrille(dic);
         g.afficherGrille();
+        g.afficherGraphe();
 
 
     }
