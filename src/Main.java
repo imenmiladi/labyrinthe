@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main {
-    public static <Noued> void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         System.out.println("Hello world!");
          Noeud n = new Noeud(1,2,'f', Noeud.TypeNoeud.passante);
          System.out.println(n.toString());
@@ -18,6 +18,7 @@ public class Main {
         g.creerGrille(dic);
         g.afficherGrille();
         g.afficherGraphe();
+
 
 
     }

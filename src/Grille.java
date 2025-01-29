@@ -4,12 +4,17 @@ public class Grille {
     private Noeud[][] grille;
     private int ligne;
     private int colonne;
-
+    private Map<Noeud, List<Noeud>> adjList;
     // Constructeur
     Grille(int ligne, int colonne) {
         this.ligne = ligne;
         this.colonne = colonne;
         grille = new Noeud[ligne][colonne];
+        adjList = new HashMap<>();
+    }
+
+    public Map<Noeud, List<Noeud>> getAdjList() {
+        return adjList;
     }
 
     public void creerGrille(List<String> dic) {
@@ -117,25 +122,27 @@ public class Grille {
                 if (i > 0 && j < colonne - 1 && grille[i - 1][j + 1].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i - 1][j + 1]);
                 if (i < ligne - 1 && j > 0 && grille[i + 1][j - 1].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i + 1][j - 1]);
                 if (i < ligne - 1 && j < colonne - 1 && grille[i + 1][j + 1].getTypeNoeud() != Noeud.TypeNoeud.bloquante) current.ajouterVoisin(grille[i + 1][j + 1]);
+
+                adjList.put(current, current.getVoisins());
             }
         }
     }
 
 
+
+    // Affichage de la liste d'adjacence
     public void afficherGraphe() {
-        for (int i = 0; i < ligne; i++) {
-            for (int j = 0; j < colonne; j++) {
-                Noeud currentNode = grille[i][j];
-                if (currentNode != null && currentNode.getTypeNoeud() != Noeud.TypeNoeud.bloquante) {
-                    System.out.print("Noeud (" + currentNode.getX() + "," + currentNode.getY() + ") -> ");
-                    List<Noeud> voisins = currentNode.getVoisins();
-                    for (Noeud voisin : voisins) {
-                        System.out.print(" (" + voisin.getX() + "," + voisin.getY() + ")");
-                    }
-                    System.out.println();
-                }
+
+        for (Map.Entry<Noeud, List<Noeud>> entry : adjList.entrySet()) {
+            Noeud noeud = entry.getKey();
+            System.out.print("Noeud (" + noeud.getX() + "," + noeud.getY() + ") -> ");
+            for (Noeud voisin : entry.getValue()) {
+                System.out.print(" (" + voisin.getX() + "," + voisin.getY() + ")");
             }
-        }}
+            System.out.println();
+        }
+    }
+
 
     // Afficher la grille en termes de lettres
     public void afficherGrille() {
