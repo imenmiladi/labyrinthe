@@ -59,6 +59,11 @@ public class Noeud {
         this.voisins = voisins;
     }
 
+
+    public void ajouterVoisin(Noeud voisin) {
+        this.voisins.add(voisin);
+    }
+
     @Override
     public String toString() {
         return "(" + x + "," + y + ",'" + lettre + "', " + typeNoeud.toString() + ")";
