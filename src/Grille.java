@@ -5,6 +5,9 @@ public class Grille {
     private int ligne;
     private int colonne;
     private Map<Noeud, List<Noeud>> adjList;
+    private Noeud depart;
+    private Noeud arrivee;
+
     // Constructeur
     Grille(int ligne, int colonne) {
         this.ligne = ligne;
@@ -13,8 +16,52 @@ public class Grille {
         adjList = new HashMap<>();
     }
 
+    public void setAdjList(Map<Noeud, List<Noeud>> adjList) {
+        this.adjList = adjList;
+    }
+
+    public int getColonne() {
+        return colonne;
+    }
+
+    public void setColonne(int colonne) {
+        this.colonne = colonne;
+    }
+
+    public int getLigne() {
+        return ligne;
+    }
+
+    public void setLigne(int ligne) {
+        this.ligne = ligne;
+    }
+
+    public Noeud[][] getGrille() {
+        return grille;
+    }
+
+    public void setGrille(Noeud[][] grille) {
+        this.grille = grille;
+    }
+
     public Map<Noeud, List<Noeud>> getAdjList() {
         return adjList;
+    }
+
+    public Noeud getDepart() {
+        return depart;
+    }
+
+    public void setDepart(Noeud depart) {
+        this.depart = depart;
+    }
+
+    public Noeud getArrivee() {
+        return arrivee;
+    }
+
+    public void setArrivee(Noeud arrivee) {
+        this.arrivee = arrivee;
     }
 
     public void creerGrille(List<String> dic) {
@@ -23,9 +70,10 @@ public class Grille {
         // Initialiser la grille avec des nœuds et des murs
         for (int i = 0; i < ligne; i++) {
             for (int j = 0; j < colonne; j++) {
-                char lettre = rand.nextDouble() < 0.2 ? '#' : '\0'; // 20% de murs
+                char lettre = rand.nextDouble() < 0.3 ? '#' : '\0'; // 20% de murs
                 Noeud.TypeNoeud typeNoeud = (lettre == '#') ? Noeud.TypeNoeud.bloquante : Noeud.TypeNoeud.passante;
                 grille[i][j] = new Noeud(i, j, lettre, typeNoeud);
+
             }
         }
 
@@ -35,7 +83,7 @@ public class Grille {
         for (int i = 0; i < Math.min(Math.max(ligne, colonne), dic.size()); i++) {
             mots.add(dic.get(i));
         }
-
+    System.out.println(mots);
         // Placer les mots dans les cases passantes
         for (String mot : mots) {
             boolean place = false;
@@ -152,6 +200,41 @@ public class Grille {
             }
             System.out.println();
         }
+    }
+    public Noeud nDepart(Grille grille) {
+        Random rand = new Random();
+
+        // Essayer de trouver un départ aléatoire en dans la premiere colonne
+        for (int i = 0; i < ligne; i++) {
+            int y = rand.nextInt(grille.getLigne());
+            Noeud noeud = grille.getGrille()[y][0];
+
+            if (noeud.getTypeNoeud() == Noeud.TypeNoeud.passante && !noeud.getVoisins().isEmpty()) {
+                noeud.setTypeNoeud(Noeud.TypeNoeud.depart);
+                setDepart(noeud);
+                return noeud;
+            }
+        }
+        // Aucun départ valide trouvé
+        return null;
+    }
+
+    public Noeud nArrivee(Grille grille) {
+        Random rand = new Random();
+
+        // Essayer de trouver un départ aléatoire en dans la premiere colonne
+        for (int i = 0; i < ligne; i++) {
+            int y = rand.nextInt(grille.getLigne());
+            Noeud noeud = grille.getGrille()[y][getColonne()-1];
+
+            if (noeud.getTypeNoeud() == Noeud.TypeNoeud.passante && !noeud.getVoisins().isEmpty()) {
+                noeud.setTypeNoeud(Noeud.TypeNoeud.arrivee);
+                setArrivee(noeud);
+                return noeud;
+            }
+        }
+        // Aucun départ valide trouvé
+        return null;
     }
 
 
